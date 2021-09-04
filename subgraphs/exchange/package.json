@@ -2,7 +2,7 @@
   "name": "exchange",
   "description": "Becoswap Subgraph",
   "version": "1.0.0",
-  "repository": "git@github.com:Becoswap/pancake-subgraph.git",
+  "repository": "git@github.com:Becoswap/becoswap-subgraph.git",
   "author": "Becoswap",
   "license": "MIT",
   "scripts": {

@@ -2,7 +2,7 @@
   "name": "smartchef",
   "description": "PancakeSwap Subgraph",
   "version": "1.0.0",
-  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "repository": "git@github.com:becoswap/becoswap-subgraph.git",
   "author": "PancakeSwap",
   "license": "MIT",
   "scripts": {
