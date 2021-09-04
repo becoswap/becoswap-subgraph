@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Binance Smart Chain Blocks
+description: Kardiachain Blocks
 repository: https://github.com/becoswap
 schema:
   file: ./schema.graphql
