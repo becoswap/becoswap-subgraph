@@ -1,0 +1,13 @@
+{
+  "name": "blocks",
+  "description": "PancakeSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:pancakeswap/pancake-subgraph.git",
+  "author": "PancakeSwap",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy": "graph deploy --product hosted-service --ipfs http://128.199.146.151:5001 --node http://128.199.146.151:8020  kai/blocks subgraph.yaml"
+  }
+}
