@@ -1,9 +1,9 @@
 {
   "name": "blocks",
-  "description": "PancakeSwap Subgraph",
+  "description": "Becoswap Subgraph",
   "version": "1.0.0",
   "repository": "git@github.com:becoswap/becoswap-subgraph.git",
-  "author": "PancakeSwap",
+  "author": "Becoswap",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen subgraph.yaml",

@@ -1,13 +1,13 @@
 {
   "name": "smartchef",
-  "description": "PancakeSwap Subgraph",
+  "description": "Becoswap Subgraph",
   "version": "1.0.0",
   "repository": "git@github.com:becoswap/becoswap-subgraph.git",
-  "author": "PancakeSwap",
+  "author": "Becoswap",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/smartchef subgraph.yaml"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ becoswap/smartchef subgraph.yaml"
   }
 }

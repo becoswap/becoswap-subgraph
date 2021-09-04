@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Binance Smart Chain Blocks
-repository: https://github.com/pancakeswap
+repository: https://github.com/becoswap
 schema:
   file: ./schema.graphql
 dataSources:
