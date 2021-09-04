@@ -13,10 +13,10 @@ export function getKaiPriceInUSD(): BigDecimal {
   let usdtPair = Pair.load(USDT_WKAI_PAIR); // usdt is token0
 
   if (kusdtPair !== null && usdtPair !== null) {
-    let totalLiquidityKAI = kusdtPair.reserve0.plus(usdtPair.reserve0);
+    let totalLiquidityKAI = kusdtPair.reserve1.plus(usdtPair.reserve1);
     if (totalLiquidityKAI.notEqual(ZERO_BD)) {
-      let kusdtWeight = kusdtPair.reserve0.div(totalLiquidityKAI);
-      let usdtWeight = usdtPair.reserve0.div(totalLiquidityKAI);
+      let kusdtWeight = kusdtPair.reserve1.div(totalLiquidityKAI);
+      let usdtWeight = usdtPair.reserve1.div(totalLiquidityKAI);
       return kusdtPair.token0Price.times(kusdtWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
       return ZERO_BD;
@@ -24,7 +24,7 @@ export function getKaiPriceInUSD(): BigDecimal {
   } else if (kusdtPair !== null) {
     return kusdtPair.token1Price;
   } else if (usdtPair !== null) {
-    return usdtPair.token0Price;
+    return usdtPair.token1Price;
   } else {
     return ZERO_BD;
   }
