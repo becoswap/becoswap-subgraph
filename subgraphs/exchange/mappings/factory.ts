@@ -76,15 +76,19 @@ export function handlePairCreated(event: PairCreated): void {
 
   let pair = new Pair(event.params.pair.toHex()) as Pair;
 
+  let _token0: Token;
+  let _token1: Token;
   if (tokenAf < tokenBf) {
-    pair.token0 = token0.id;
-    pair.token1 = token1.id;
+    _token0 = token0 as Token;
+    _token1 = token1 as Token;
   } else {
-    pair.token0 = token1.id;
-    pair.token1 = token0.id;
+    _token0 = token1 as Token;
+    _token1 = token0 as Token;
   }
 
-  pair.name = token0.symbol.concat("-").concat(token1.symbol);
+  pair.name = _token0.symbol.concat("-").concat(_token1.symbol);
+  pair.token0 = _token0.id;
+  pair.token1 = _token1.id;
   pair.totalTransactions = ZERO_BI;
   pair.reserve0 = ZERO_BD;
   pair.reserve1 = ZERO_BD;
