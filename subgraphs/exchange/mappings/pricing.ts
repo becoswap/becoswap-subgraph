@@ -22,9 +22,9 @@ export function getKaiPriceInUSD(): BigDecimal {
       return ZERO_BD;
     }
   } else if (kusdtPair !== null) {
-    return kusdtPair.token1Price;
+    return kusdtPair.token0Price;
   } else if (usdtPair !== null) {
-    return usdtPair.token1Price;
+    return usdtPair.token0Price;
   } else {
     return ZERO_BD;
   }
