@@ -1,0 +1,39 @@
+type Robot @entity {
+  id: ID!
+
+  owner: Bytes!
+  cardId: BigInt!
+  classId: BigInt!
+  rarity: BigInt!
+  sireId: BigInt! 
+  matronId: BigInt! 
+  genes: BigInt! 
+  cooldownEndBlock: BigInt!
+  siringWithId: BigInt! 
+
+  "Marketplace"
+  onSale: Boolean!
+
+
+  "Body Parts"
+  anten: BigInt!
+  head: BigInt!
+  eye: BigInt!
+  lShouder: BigInt!
+  rShouder: BigInt!
+  lArm: BigInt!
+  rArm: BigInt!
+  lHand: BigInt!
+  rHand: BigInt!
+
+  "Monster: Body Parts"
+  mouth: BigInt!
+  hand: BigInt!
+  arm: BigInt!
+
+  "Stats"
+  hp: BigInt!
+  speed: BigInt!
+  strength: BigInt!
+}
+

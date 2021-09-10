@@ -1,0 +1,13 @@
+{
+  "name": "kriptogalaxybattle",
+  "description": "Becoswap Subgraph",
+  "version": "1.0.0",
+  "repository": "git@github.com:becoswap/becoswap-subgraph.git",
+  "author": "Becoswap",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy": "graph deploy --product hosted-service --ipfs http://128.199.146.151:5001 --node http://128.199.146.151:8020 becoswap/kriptogalaxybattle subgraph.yaml"
+  }
+}
