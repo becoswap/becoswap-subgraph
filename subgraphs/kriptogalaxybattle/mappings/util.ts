@@ -12,7 +12,7 @@ export function fetchGeneTraits(genes: BigInt): Array<i32> {
   let contract = GeneScience.bind(Address.fromString(geneScienceAddr));
   let res = contract.try_decode(genes);
   if (res.reverted) {
-    return new Array(43);
+    return new Array(41);
   }
 
   return res.value;

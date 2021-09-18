@@ -1,6 +1,17 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_kaba",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_assembleFee",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -256,6 +267,74 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "assembleFeeRange",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "assembleManager",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_matronId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_sireId",
+        "type": "uint256"
+      }
+    ],
+    "name": "assembleWithAuto",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_matronId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_sireId",
+        "type": "uint256"
+      }
+    ],
+    "name": "assembleWithViaAution",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -273,42 +352,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "breedManager",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_matronId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_sireId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "breedWithAuto",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -321,7 +364,7 @@
         "type": "uint256"
       }
     ],
-    "name": "canBreedWith",
+    "name": "canAssembleWith",
     "outputs": [
       {
         "internalType": "bool",
@@ -439,70 +482,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_robotId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRobot",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "genes",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bornAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint64",
-        "name": "cooldownEndBlock",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint256",
-        "name": "matronId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "sireId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "siringWithId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "cooldownIndex",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint16",
-        "name": "generation",
-        "type": "uint16"
-      },
-      {
-        "internalType": "bool",
-        "name": "isGestating",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isReady",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "_matronId",
         "type": "uint256"
       }
@@ -569,7 +548,7 @@
         "type": "uint256"
       }
     ],
-    "name": "isReadyToBreed",
+    "name": "isReadyToAssemble",
     "outputs": [
       {
         "internalType": "bool",
@@ -702,6 +681,13 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -877,11 +863,37 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_newAddr",
+        "type": "address"
+      }
+    ],
+    "name": "setAssembleFeeAddr",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[14]",
+        "name": "newFees",
+        "type": "uint256[14]"
+      }
+    ],
+    "name": "setAssembleFeeRange",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_newManager",
         "type": "address"
       }
     ],
-    "name": "setBreedManager",
+    "name": "setAssembleManager",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -921,16 +933,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_destroyer",
+        "name": "_address",
         "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "_whitelisted",
-        "type": "bool"
       }
     ],
-    "name": "setDestroyer",
+    "name": "setGeneScienceAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -939,11 +946,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_address",
+        "name": "_newAddr",
         "type": "address"
       }
     ],
-    "name": "setGeneScienceAddress",
+    "name": "setKaba",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -970,24 +977,6 @@
       }
     ],
     "name": "setSecondsPerBlock",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_upgrader",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "_whitelisted",
-        "type": "bool"
-      }
-    ],
-    "name": "setUpgrader",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1169,6 +1158,13 @@
   },
   {
     "inputs": [],
+    "name": "unpause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "whitelistSetterAddress",
     "outputs": [
       {
@@ -1202,35 +1198,61 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_robotId",
+        "type": "uint256"
       }
     ],
-    "name": "whitelistedDestroyer",
+    "name": "getRobot",
     "outputs": [
       {
+        "internalType": "uint256",
+        "name": "genes",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bornAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "cooldownEndBlock",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "matronId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "sireId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "siringWithId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "cooldownIndex",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "generation",
+        "type": "uint16"
+      },
+      {
         "internalType": "bool",
-        "name": "",
+        "name": "isGestating",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "whitelistedUpgrader",
-    "outputs": [
+      },
       {
         "internalType": "bool",
-        "name": "",
+        "name": "isReady",
         "type": "bool"
       }
     ],
