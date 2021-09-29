@@ -1,5 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { RobotCreated, Pregnant } from "../generated/RobotCore/RobotCore";
+import { RobotCreated, Pregnant, Transfer } from "../generated/RobotCore/RobotCore";
 import { Robot } from "../generated/schema";
 import { cooldowns, fetchGeneTraits, getRobotImage, ONE_BI, TWO_BI, ZERO_BI } from "./util";
 
@@ -7,6 +7,11 @@ let MAX_COOLDOWN_INDEX = BigInt.fromI32(13);
 let SECONDS_PER_BLOCK = BigInt.fromI32(5);
 
 export function handlePregnant(args: Pregnant): void {
+  let matron = Robot.load(args.params.matronId.toString());
+  // Mark the matron as pregnant, keeping track of who the sire is.
+  matron.siringWithId = args.params.sireId;
+  matron.save();
+
   _triggerCooldown(args, args.params.matronId.toString());
   _triggerCooldown(args, args.params.sireId.toString());
 }
@@ -55,4 +60,12 @@ export function handleCreate(args: RobotCreated): void {
   robot.gen0Rarity = BigInt.fromI32(1);
   robot.image = getRobotImage(traits);
   robot.save();
+}
+
+export function handleTransfer(args: Transfer): void {
+  let robot = Robot.load(args.params.tokenId.toString());
+  if (robot) {
+    robot.owner = args.params.to;
+    robot.save();
+  }
 }

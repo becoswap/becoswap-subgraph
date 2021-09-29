@@ -28,3 +28,5 @@ dataSources:
           handler: handlePregnant
         - event: RobotCreated(indexed uint256,indexed address,uint256,uint256,uint256)
           handler: handleCreate
+        - event: Transfer(indexed address,indexed address,indexed uint256) 
+          handler: handleTransfer
