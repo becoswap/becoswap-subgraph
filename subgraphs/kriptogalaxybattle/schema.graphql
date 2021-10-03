@@ -14,3 +14,20 @@ type Robot @entity {
   image: String!
 }
 
+
+
+type Monster @entity {
+  id: ID!
+
+  name: String!
+  owner: Bytes!
+  gen0Rarity: BigInt!
+  sireId: BigInt! 
+  matronId: BigInt! 
+  genes: String! 
+  cooldownEndBlock: BigInt!
+  cooldownIndex: BigInt!
+  siringWithId: BigInt! 
+  generation: BigInt!
+  image: String!
+}

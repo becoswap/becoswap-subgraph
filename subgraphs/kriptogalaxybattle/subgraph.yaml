@@ -30,3 +30,30 @@ dataSources:
           handler: handleCreate
         - event: Transfer(indexed address,indexed address,indexed uint256) 
           handler: handleTransfer
+
+  - kind: ethereum/contract
+    name: MonsterCore
+    network: mainnet
+    source:
+      address: '0xc66BA8C9E149B5d3977Dfa73cE8DDEDEB90C28aA'
+      abi: MonsterCore
+      startBlock: 4601955
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/monster.ts
+      entities:
+        - MonsterCore
+      abis:
+        - name: MonsterCore
+          file: ./abis/MonsterCore.json
+        - name: GeneScience
+          file: ./abis/GeneScience.json
+      eventHandlers:
+        - event: Pregnant(address,uint256,uint256,uint256)
+          handler: handlePregnant
+        - event: MonsterCreated(indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handleCreate
+        - event: Transfer(indexed address,indexed address,indexed uint256) 
+          handler: handleTransfer         
