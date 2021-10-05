@@ -3,7 +3,7 @@ import { BigInt, BigDecimal, store } from "@graphprotocol/graph-ts";
 import {
   Pair,
   Token,
-  KaidexFactory,
+  BecoFactory,
   Transaction,
   Mint as MintEvent,
   Burn as BurnEvent,
@@ -11,7 +11,7 @@ import {
   Bundle,
 } from "../generated/schema";
 import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/Pair/Pair";
-import { updatePairDayData, updateTokenDayData, updateKaidexDayData, updatePairHourData } from "./dayUpdates";
+import { updatePairDayData, updateTokenDayData, updateBecoDayData, updatePairHourData } from "./dayUpdates";
 import { getKaiPriceInUSD, findKaiPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD } from "./pricing";
 import { convertTokenToDecimal, ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ZERO_BD, BI_18 } from "./utils";
 
@@ -165,10 +165,10 @@ export function handleSync(event: Sync): void {
   let pair = Pair.load(event.address.toHex());
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);
-  let kaidex = KaidexFactory.load(FACTORY_ADDRESS);
+  let beco = BecoFactory.load(FACTORY_ADDRESS);
 
   // reset factory liquidity by subtracting only tracked liquidity
-  kaidex.totalLiquidityKAI = kaidex.totalLiquidityKAI.minus(pair.trackedReserveKAI as BigDecimal);
+  beco.totalLiquidityKAI = beco.totalLiquidityKAI.minus(pair.trackedReserveKAI as BigDecimal);
 
   // reset token total liquidity amounts
   token0.totalLiquidity = token0.totalLiquidity.minus(pair.reserve0);
@@ -218,8 +218,8 @@ export function handleSync(event: Sync): void {
   pair.reserveUSD = pair.reserveKAI.times(bundle.kaiPrice);
 
   // use tracked amounts globally
-  kaidex.totalLiquidityKAI = kaidex.totalLiquidityKAI.plus(trackedLiquidityKAI);
-  kaidex.totalLiquidityUSD = kaidex.totalLiquidityKAI.times(bundle.kaiPrice);
+  beco.totalLiquidityKAI = beco.totalLiquidityKAI.plus(trackedLiquidityKAI);
+  beco.totalLiquidityUSD = beco.totalLiquidityKAI.times(bundle.kaiPrice);
 
   // now correctly set liquidity amounts for each token
   token0.totalLiquidity = token0.totalLiquidity.plus(pair.reserve0);
@@ -227,7 +227,7 @@ export function handleSync(event: Sync): void {
 
   // save entities
   pair.save();
-  kaidex.save();
+  beco.save();
   token0.save();
   token1.save();
 }
@@ -238,7 +238,7 @@ export function handleMint(event: Mint): void {
   let mint = MintEvent.load(mints[mints.length - 1]);
 
   let pair = Pair.load(event.address.toHex());
-  let kaidex = KaidexFactory.load(FACTORY_ADDRESS);
+  let beco = BecoFactory.load(FACTORY_ADDRESS);
 
   let token0 = Token.load(pair.token0);
   let token1 = Token.load(pair.token1);
@@ -260,13 +260,13 @@ export function handleMint(event: Mint): void {
 
   // update txn counts
   pair.totalTransactions = pair.totalTransactions.plus(ONE_BI);
-  kaidex.totalTransactions = kaidex.totalTransactions.plus(ONE_BI);
+  beco.totalTransactions = beco.totalTransactions.plus(ONE_BI);
 
   // save entities
   token0.save();
   token1.save();
   pair.save();
-  kaidex.save();
+  beco.save();
 
   mint.sender = event.params.sender;
   mint.amount0 = token0Amount as BigDecimal;
@@ -277,7 +277,7 @@ export function handleMint(event: Mint): void {
 
   updatePairDayData(event);
   updatePairHourData(event);
-  updateKaidexDayData(event);
+  updateBecoDayData(event);
   updateTokenDayData(token0 as Token, event);
   updateTokenDayData(token1 as Token, event);
 }
@@ -292,7 +292,7 @@ export function handleBurn(event: Burn): void {
   let burn = BurnEvent.load(burns[burns.length - 1]);
 
   let pair = Pair.load(event.address.toHex());
-  let kaidex = KaidexFactory.load(FACTORY_ADDRESS);
+  let beco = BecoFactory.load(FACTORY_ADDRESS);
 
   //update token info
   let token0 = Token.load(pair.token0);
@@ -312,14 +312,14 @@ export function handleBurn(event: Burn): void {
     .times(bundle.kaiPrice);
 
   // update txn counts
-  kaidex.totalTransactions = kaidex.totalTransactions.plus(ONE_BI);
+  beco.totalTransactions = beco.totalTransactions.plus(ONE_BI);
   pair.totalTransactions = pair.totalTransactions.plus(ONE_BI);
 
   // update global counter and save
   token0.save();
   token1.save();
   pair.save();
-  kaidex.save();
+  beco.save();
 
   // update burn
   // burn.sender = event.params.sender
@@ -332,7 +332,7 @@ export function handleBurn(event: Burn): void {
 
   updatePairDayData(event);
   updatePairHourData(event);
-  updateKaidexDayData(event);
+  updateBecoDayData(event);
   updateTokenDayData(token0 as Token, event);
   updateTokenDayData(token1 as Token, event);
 }
@@ -399,17 +399,17 @@ export function handleSwap(event: Swap): void {
   pair.save();
 
   // update global values, only used tracked amounts for volume
-  let kaidex = KaidexFactory.load(FACTORY_ADDRESS);
-  kaidex.totalVolumeUSD = kaidex.totalVolumeUSD.plus(trackedAmountUSD);
-  kaidex.totalVolumeKAI = kaidex.totalVolumeKAI.plus(trackedAmountKAI);
-  kaidex.untrackedVolumeUSD = kaidex.untrackedVolumeUSD.plus(derivedAmountUSD);
-  kaidex.totalTransactions = kaidex.totalTransactions.plus(ONE_BI);
+  let beco = BecoFactory.load(FACTORY_ADDRESS);
+  beco.totalVolumeUSD = beco.totalVolumeUSD.plus(trackedAmountUSD);
+  beco.totalVolumeKAI = beco.totalVolumeKAI.plus(trackedAmountKAI);
+  beco.untrackedVolumeUSD = beco.untrackedVolumeUSD.plus(derivedAmountUSD);
+  beco.totalTransactions = beco.totalTransactions.plus(ONE_BI);
 
   // save entities
   pair.save();
   token0.save();
   token1.save();
-  kaidex.save();
+  beco.save();
 
   let transaction = Transaction.load(event.transaction.hash.toHex());
   if (transaction === null) {
@@ -451,15 +451,15 @@ export function handleSwap(event: Swap): void {
   // update day entities
   let pairDayData = updatePairDayData(event);
   let pairHourData = updatePairHourData(event);
-  let kaidexDayData = updateKaidexDayData(event);
+  let becoDayData = updateBecoDayData(event);
   let token0DayData = updateTokenDayData(token0 as Token, event);
   let token1DayData = updateTokenDayData(token1 as Token, event);
 
   // swap specific updating
-  kaidexDayData.dailyVolumeUSD = kaidexDayData.dailyVolumeUSD.plus(trackedAmountUSD);
-  kaidexDayData.dailyVolumeKAI = kaidexDayData.dailyVolumeKAI.plus(trackedAmountKAI);
-  kaidexDayData.dailyVolumeUntracked = kaidexDayData.dailyVolumeUntracked.plus(derivedAmountUSD);
-  kaidexDayData.save();
+  becoDayData.dailyVolumeUSD = becoDayData.dailyVolumeUSD.plus(trackedAmountUSD);
+  becoDayData.dailyVolumeKAI = becoDayData.dailyVolumeKAI.plus(trackedAmountKAI);
+  becoDayData.dailyVolumeUntracked = becoDayData.dailyVolumeUntracked.plus(derivedAmountUSD);
+  becoDayData.save();
 
   // swap specific updating for pair
   pairDayData.dailyVolumeToken0 = pairDayData.dailyVolumeToken0.plus(amount0Total);

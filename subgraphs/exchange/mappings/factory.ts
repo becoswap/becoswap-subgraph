@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { KaidexFactory, Pair, Token, Bundle } from "../generated/schema";
+import { BecoFactory, Pair, Token, Bundle } from "../generated/schema";
 import { Pair as PairTemplate } from "../generated/templates";
 import { PairCreated } from "../generated/Factory/Factory";
 import {
@@ -13,9 +13,9 @@ import {
 } from "./utils";
 
 export function handlePairCreated(event: PairCreated): void {
-  let factory = KaidexFactory.load(FACTORY_ADDRESS);
+  let factory = BecoFactory.load(FACTORY_ADDRESS);
   if (factory === null) {
-    factory = new KaidexFactory(FACTORY_ADDRESS);
+    factory = new BecoFactory(FACTORY_ADDRESS);
     factory.totalPairs = ZERO_BI;
     factory.totalTransactions = ZERO_BI;
     factory.totalVolumeKAI = ZERO_BD;
@@ -71,24 +71,10 @@ export function handlePairCreated(event: PairCreated): void {
     token1.save();
   }
 
-  let tokenAf = parseInt(token0.id);
-  let tokenBf = parseInt(token1.id);
-
   let pair = new Pair(event.params.pair.toHex()) as Pair;
-
-  let _token0: Token;
-  let _token1: Token;
-  if (tokenAf < tokenBf) {
-    _token0 = token0 as Token;
-    _token1 = token1 as Token;
-  } else {
-    _token0 = token1 as Token;
-    _token1 = token0 as Token;
-  }
-
-  pair.name = _token0.symbol.concat("-").concat(_token1.symbol);
-  pair.token0 = _token0.id;
-  pair.token1 = _token1.id;
+  pair.token0 = token0.id;
+  pair.token1 = token1.id;
+  pair.name = token0.symbol.concat("-").concat(token1.symbol);
   pair.totalTransactions = ZERO_BI;
   pair.reserve0 = ZERO_BD;
   pair.reserve1 = ZERO_BD;

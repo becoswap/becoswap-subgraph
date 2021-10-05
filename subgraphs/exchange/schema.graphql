@@ -1,4 +1,4 @@
-type KaidexFactory @entity {
+type BecoFactory @entity {
   id: ID!
 
   "Total of pairs"
@@ -180,7 +180,7 @@ type Swap @entity {
   amountUSD: BigDecimal!
 }
 
-type KaidexDayData @entity {
+type BecoDayData @entity {
   id: ID! # timestamp rounded to current day by dividing by 86400
 
   date: Int!

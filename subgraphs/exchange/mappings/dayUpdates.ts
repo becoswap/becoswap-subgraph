@@ -1,31 +1,31 @@
 /* eslint-disable prefer-const */
 import { PairHourData } from "../generated/schema";
 import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
-import { Pair, Bundle, Token, KaidexFactory, KaidexDayData, PairDayData, TokenDayData } from "../generated/schema";
+import { Pair, Bundle, Token, BecoFactory, BecoDayData, PairDayData, TokenDayData } from "../generated/schema";
 import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./utils";
 
-export function updateKaidexDayData(event: ethereum.Event): KaidexDayData {
-  let kaidex = KaidexFactory.load(FACTORY_ADDRESS);
+export function updateBecoDayData(event: ethereum.Event): BecoDayData {
+  let beco = BecoFactory.load(FACTORY_ADDRESS);
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
 
-  let kaidexDayData = KaidexDayData.load(dayID.toString());
-  if (kaidexDayData === null) {
-    kaidexDayData = new KaidexDayData(dayID.toString());
-    kaidexDayData.date = dayStartTimestamp;
-    kaidexDayData.dailyVolumeUSD = ZERO_BD;
-    kaidexDayData.dailyVolumeKAI = ZERO_BD;
-    kaidexDayData.totalVolumeUSD = ZERO_BD;
-    kaidexDayData.totalVolumeKAI = ZERO_BD;
-    kaidexDayData.dailyVolumeUntracked = ZERO_BD;
+  let becoDayData = BecoDayData.load(dayID.toString());
+  if (becoDayData === null) {
+    becoDayData = new BecoDayData(dayID.toString());
+    becoDayData.date = dayStartTimestamp;
+    becoDayData.dailyVolumeUSD = ZERO_BD;
+    becoDayData.dailyVolumeKAI = ZERO_BD;
+    becoDayData.totalVolumeUSD = ZERO_BD;
+    becoDayData.totalVolumeKAI = ZERO_BD;
+    becoDayData.dailyVolumeUntracked = ZERO_BD;
   }
-  kaidexDayData.totalLiquidityUSD = kaidex.totalLiquidityUSD;
-  kaidexDayData.totalLiquidityKAI = kaidex.totalLiquidityKAI;
-  kaidexDayData.totalTransactions = kaidex.totalTransactions;
-  kaidexDayData.save();
+  becoDayData.totalLiquidityUSD = beco.totalLiquidityUSD;
+  becoDayData.totalLiquidityKAI = beco.totalLiquidityKAI;
+  becoDayData.totalTransactions = beco.totalTransactions;
+  becoDayData.save();
 
-  return kaidexDayData as KaidexDayData;
+  return becoDayData as BecoDayData;
 }
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {

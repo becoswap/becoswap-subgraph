@@ -3,28 +3,28 @@ import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { Pair, Token, Bundle } from "../generated/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./utils";
 
-const WKAI_ADDRESS = "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d";
-const KUSDT_WKAI_PAIR = "0x7cd3c7afedd16a72fba66ea35b2e2b301d1b7093";
-const USDT_WKAI_PAIR = "0x8a5c572ce422da947e2d04a2d8339a2ea7141de9";
+let WKAI_ADDRESS = "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d";
+let BUSD_WKAI_PAIR = "0x60fe04cf73effd938bed5dbbd1de724f5931f921"; // created block 589414
+let USDT_WKAI_PAIR = "0xe8889dabfd6526496505aacbb2d09a63927024d7"; // created block 648115
 
 export function getKaiPriceInUSD(): BigDecimal {
-  // fetch kai prices for each stablecoin
-  let kusdtPair = Pair.load(KUSDT_WKAI_PAIR); // usdt is token0
-  let usdtPair = Pair.load(USDT_WKAI_PAIR); // usdt is token0
+  // fetch eth prices for each stablecoin
+  let usdtPair = Pair.load(USDT_WKAI_PAIR); // usdt is token1
+  let busdPair = Pair.load(BUSD_WKAI_PAIR); // busd is token0
 
-  if (kusdtPair !== null && usdtPair !== null) {
-    let totalLiquidityKAI = kusdtPair.reserve1.plus(usdtPair.reserve1);
+  if (busdPair !== null && usdtPair !== null) {
+    let totalLiquidityKAI = busdPair.reserve1.plus(usdtPair.reserve0);
     if (totalLiquidityKAI.notEqual(ZERO_BD)) {
-      let kusdtWeight = kusdtPair.reserve1.div(totalLiquidityKAI);
-      let usdtWeight = usdtPair.reserve1.div(totalLiquidityKAI);
-      return kusdtPair.token0Price.times(kusdtWeight).plus(usdtPair.token0Price.times(usdtWeight));
+      let busdWeight = busdPair.reserve1.div(totalLiquidityKAI);
+      let usdtWeight = usdtPair.reserve0.div(totalLiquidityKAI);
+      return busdPair.token0Price.times(busdWeight).plus(usdtPair.token1Price.times(usdtWeight));
     } else {
       return ZERO_BD;
     }
-  } else if (kusdtPair !== null) {
-    return kusdtPair.token0Price;
+  } else if (busdPair !== null) {
+    return busdPair.token0Price;
   } else if (usdtPair !== null) {
-    return usdtPair.token0Price;
+    return usdtPair.token1Price;
   } else {
     return ZERO_BD;
   }
@@ -33,7 +33,7 @@ export function getKaiPriceInUSD(): BigDecimal {
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
   "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d", // WKAI
-  "0x92364ec610efa050d296f1eeb131f2139fb8810e", // KUSD-T
+  "0x3444273afdf9e00fd0491c8a97738aca3ebb2a93", // BUSD
   "0x551a5dcac57c66aa010940c2dcff5da9c53aa53b", // USDT
 ];
 
