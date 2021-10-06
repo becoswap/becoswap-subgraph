@@ -60,6 +60,8 @@ export function handleTransfer(event: Transfer): void {
       mint.liquidity = value;
       mint.timestamp = transaction.timestamp;
       mint.transaction = transaction.id;
+      mint.token0 = pair.token0;
+      mint.token1 = pair.token1;
       mint.save();
 
       // update mints in transaction
@@ -84,6 +86,8 @@ export function handleTransfer(event: Transfer): void {
     burn.sender = event.params.from;
     burn.needsComplete = true;
     burn.transaction = transaction.id;
+    burn.token0 = pair.token0;
+    burn.token1 = pair.token1;
     burn.save();
 
     // TODO: Consider using .concat() for handling array updates to protect
@@ -112,6 +116,8 @@ export function handleTransfer(event: Transfer): void {
         burn.transaction = transaction.id;
         burn.needsComplete = false;
         burn.pair = pair.id;
+        burn.token0 = pair.token0;
+        burn.token1 = pair.token1;
         burn.liquidity = value;
         burn.transaction = transaction.id;
         burn.timestamp = transaction.timestamp;
@@ -121,6 +127,8 @@ export function handleTransfer(event: Transfer): void {
       burn.transaction = transaction.id;
       burn.needsComplete = false;
       burn.pair = pair.id;
+      burn.token0 = pair.token0;
+      burn.token1 = pair.token1;
       burn.liquidity = value;
       burn.transaction = transaction.id;
       burn.timestamp = transaction.timestamp;
@@ -436,6 +444,8 @@ export function handleSwap(event: Swap): void {
   swap.to = event.params.to;
   swap.from = event.transaction.from;
   swap.logIndex = event.logIndex;
+  swap.token0 = pair.token0;
+  swap.token1 = pair.token1;
   // use the tracked amount if we have it
   swap.amountUSD = trackedAmountUSD === ZERO_BD ? derivedAmountUSD : trackedAmountUSD;
   swap.save();

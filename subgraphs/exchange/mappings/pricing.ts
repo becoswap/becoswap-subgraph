@@ -9,22 +9,22 @@ let USDT_WKAI_PAIR = "0xe8889dabfd6526496505aacbb2d09a63927024d7"; // created bl
 
 export function getKaiPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(USDT_WKAI_PAIR); // usdt is token1
+  let usdtPair = Pair.load(USDT_WKAI_PAIR); // usdt is token0
   let busdPair = Pair.load(BUSD_WKAI_PAIR); // busd is token0
 
   if (busdPair !== null && usdtPair !== null) {
-    let totalLiquidityKAI = busdPair.reserve1.plus(usdtPair.reserve0);
+    let totalLiquidityKAI = busdPair.reserve1.plus(usdtPair.reserve1);
     if (totalLiquidityKAI.notEqual(ZERO_BD)) {
       let busdWeight = busdPair.reserve1.div(totalLiquidityKAI);
-      let usdtWeight = usdtPair.reserve0.div(totalLiquidityKAI);
-      return busdPair.token0Price.times(busdWeight).plus(usdtPair.token1Price.times(usdtWeight));
+      let usdtWeight = usdtPair.reserve1.div(totalLiquidityKAI);
+      return busdPair.token0Price.times(busdWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
       return ZERO_BD;
     }
   } else if (busdPair !== null) {
     return busdPair.token0Price;
   } else if (usdtPair !== null) {
-    return usdtPair.token1Price;
+    return usdtPair.token0Price;
   } else {
     return ZERO_BD;
   }
