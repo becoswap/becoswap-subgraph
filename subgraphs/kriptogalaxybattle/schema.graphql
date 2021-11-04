@@ -31,3 +31,12 @@ type Monster @entity {
   generation: BigInt!
   image: String!
 }
+
+
+type Planet @entity {
+  id: ID!
+  owner: Bytes!
+  cardId: Int!
+  size: Int!
+  rarity: Int!
+}

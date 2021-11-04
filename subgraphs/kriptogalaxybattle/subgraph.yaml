@@ -56,4 +56,27 @@ dataSources:
         - event: MonsterCreated(indexed uint256,indexed address,uint256,uint256,uint256)
           handler: handleCreate
         - event: Transfer(indexed address,indexed address,indexed uint256) 
+          handler: handleTransfer        
+          
+  - kind: ethereum/contract
+    name: PlanetCore
+    network: mainnet
+    source:
+      address: '0x4af4ab01fC8BB6452dAc640d3F78745C49F0Ca38'
+      abi: PlanetCore
+      startBlock: 5060118
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/planet.ts
+      entities:
+        - PlanetCore
+      abis:
+        - name: PlanetCore
+          file: ./abis/PlanetCore.json
+      eventHandlers:
+        - event: Created(indexed uint256,indexed address,uint8,uint8,uint8)
+          handler: handleCreate
+        - event: Transfer(indexed address,indexed address,indexed uint256) 
           handler: handleTransfer         
