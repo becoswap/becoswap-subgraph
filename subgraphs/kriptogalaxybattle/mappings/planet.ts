@@ -5,7 +5,7 @@ export function handleCreate(args: Created): void {
     let planet = new Planet(args.params.planetId.toString())
     planet.cardId = args.params.cardId;
     planet.size = args.params.size;
-    planet.rarity = args.params.size;
+    planet.rarity = args.params.rarity;
     planet.owner = args.params.owner;
     planet.save()
 }
