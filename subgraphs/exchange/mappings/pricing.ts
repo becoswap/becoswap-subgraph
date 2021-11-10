@@ -38,7 +38,7 @@ let WHITELIST: string[] = [
 ];
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_KAI = BigDecimal.fromString("10");
+let MINIMUM_LIQUIDITY_THRESHOLD_KAI = BigDecimal.fromString("100000");
 
 /**
  * Search through graph to find derived KAI per token.
@@ -50,16 +50,19 @@ export function findKaiPerToken(token: Token): BigDecimal {
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
-    let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-    if (pairAddress.toHex() != ADDRESS_ZERO) {
-      let pair = Pair.load(pairAddress.toHex());
-      if (pair.token0 == token.id && pair.reserveKAI.gt(MINIMUM_LIQUIDITY_THRESHOLD_KAI)) {
-        let token1 = Token.load(pair.token1);
-        return pair.token1Price.times(token1.derivedKAI as BigDecimal); // return token1 per our token * KAI per token 1
-      }
-      if (pair.token1 == token.id && pair.reserveKAI.gt(MINIMUM_LIQUIDITY_THRESHOLD_KAI)) {
-        let token0 = Token.load(pair.token0);
-        return pair.token0Price.times(token0.derivedKAI as BigDecimal); // return token0 per our token * KAI per token 0
+    let res = factoryContract.try_getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+    if (!res.reverted) {
+      let pairAddress = res.value;
+      if (pairAddress.toHex() != ADDRESS_ZERO) {
+        let pair = Pair.load(pairAddress.toHex());
+        if (pair.token0 == token.id && pair.reserveKAI.gt(MINIMUM_LIQUIDITY_THRESHOLD_KAI)) {
+          let token1 = Token.load(pair.token1);
+          return pair.token1Price.times(token1.derivedKAI as BigDecimal); // return token1 per our token * KAI per token 1
+        }
+        if (pair.token1 == token.id && pair.reserveKAI.gt(MINIMUM_LIQUIDITY_THRESHOLD_KAI)) {
+          let token0 = Token.load(pair.token0);
+          return pair.token0Price.times(token0.derivedKAI as BigDecimal); // return token0 per our token * KAI per token 0
+        }
       }
     }
   }
