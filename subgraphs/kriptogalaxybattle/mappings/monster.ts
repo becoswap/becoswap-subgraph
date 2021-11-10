@@ -37,6 +37,8 @@ export function handleCreate(args: MonsterCreated): void {
   monster.generation = ZERO_BI;
   monster.cooldownIndex = ZERO_BI;
   monster.name = "KABA Monster #" + monster.id;
+  monster.exp = 0;
+  monster.level = 0;
 
   if (!monster.matronId.isZero()) {
     let matron = Monster.load(monster.matronId.toString());

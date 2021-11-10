@@ -60,6 +60,8 @@ export function handleCreate(args: RobotCreated): void {
   let traits = fetchGeneTraits(args.params._genes);
   robot.gen0Rarity = BigInt.fromI32(1);
   robot.image = getRobotImage(traits);
+  robot.exp = 0;
+  robot.level = 0;
   robot.save();
 }
 

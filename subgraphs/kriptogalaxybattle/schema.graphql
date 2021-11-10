@@ -45,6 +45,6 @@ type Planet @entity {
   rarity: Int!
 
   strategy: Bytes!
-  robots: [Robot!]!,
-  monsters: [Monster!]!,
+  robots: [Robot]!,
+  monsters: [Monster]!,
 }

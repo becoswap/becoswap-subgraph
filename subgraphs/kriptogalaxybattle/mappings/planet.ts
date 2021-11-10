@@ -1,12 +1,14 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { Created, Transfer } from "../generated/PlanetCore/PlanetCore";
 import { Planet } from "../generated/schema";
 
-const strateries = [
+
+const strategies : Array<string> = [
+  "0x96534accf2d52225462cfe0a0ec18b8b37353e4d"
 ]
 
-function isStratery(addr: Address) {
-  return strateries.indexOf(addr.toString()) >= 0
+function isStratery(addr: Address): boolean {
+ return strategies.filter(v =>  v === addr.toString()).length > 0
 }
 
 export function handleCreate(args: Created): void {
@@ -23,10 +25,11 @@ export function handleTransfer(args: Transfer): void {
     let m = Planet.load(args.params.tokenId.toString());
     if (m) {
       m.owner = args.params.to;
-      delete m.robots;
-      delete m.monsters;
-      delete m.strategy;
+      m.robots = null;
+      m.monsters = null;
+      m.strategy = null;
       m.save();
+      
     }
 }
   
