@@ -2,10 +2,16 @@ import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { Created, Transfer } from "../generated/PlanetCore/PlanetCore";
 import { Planet } from "../generated/schema";
 
-const strategies: Array<string> = ["0x96534accf2d52225462cfe0a0ec18b8b37353e4d"];
+const strategies: Array<string> = ["0x96534ACCf2d52225462cFE0A0Ec18B8b37353E4d"];
 
 function isStratery(addr: Address): boolean {
-  return strategies.filter((v) => v === addr.toString()).length > 0;
+  for (let i = 0; i < strategies.length; i++) {
+    if (strategies[i] == addr.toString()) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export function handleCreate(args: Created): void {
