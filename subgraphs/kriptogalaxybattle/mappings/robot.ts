@@ -1,5 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { RobotCreated, Pregnant, Transfer } from "../generated/RobotCore/RobotCore";
+import { Exp, LevelUp } from "../generated/RobotMetaData/CharacterMetaData";
 import { Robot } from "../generated/schema";
 import { cooldowns, fetchGeneTraits, getRobotImage, ONE_BI, TWO_BI, ZERO_BI } from "./util";
 
@@ -68,4 +69,22 @@ export function handleTransfer(args: Transfer): void {
     robot.owner = args.params.to;
     robot.save();
   }
+}
+
+
+export function handleExp(args: Exp): void {
+  let robot = Robot.load(args.params._tokenId.toString());
+  if (args.params._expIncreased.gt(BigInt.fromI32(0))) {
+    robot.exp += args.params._expIncreased.toI32()
+  } else {
+    robot.exp -= args.params._expDecreased.toI32()
+  }
+  robot.save()
+}
+
+
+export function handleLevelUp(args: LevelUp): void {
+  let robot = Robot.load(args.params._tokenId.toString());
+  robot.level = args.params._levelTo;
+  robot.save()
 }

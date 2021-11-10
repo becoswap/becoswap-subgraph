@@ -101,3 +101,50 @@ dataSources:
       eventHandlers:
         - event: Stake(indexed address,uint256,uint256[],uint256[],uint256)
           handler: handleStake
+
+  - kind: ethereum/contract
+    name: RobotMetaData
+    network: mainnet
+    source:
+      address: '0x4af4ab01fC8BB6452dAc640d3F78745C49F0Ca38'
+      abi: CharacterMetaData
+      startBlock: 5060118
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/robot.ts
+      entities:
+        - CharacterMetaData
+      abis:
+        - name: CharacterMetaData
+          file: ./abis/CharacterMetaData.json
+      eventHandlers:
+        - event: LevelUp(indexed uint256,uint8)
+          handler: handleLevelUp
+        - event: Exp(indexed uint256,uint256,uint256)
+          handler: handleExp
+
+  - kind: ethereum/contract
+    name: MonsterMetaData
+    network: mainnet
+    source:
+      address: '0x4af4ab01fC8BB6452dAc640d3F78745C49F0Ca38'
+      abi: CharacterMetaData
+      startBlock: 5060118
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/monster.ts
+      entities:
+        - CharacterMetaData
+      abis:
+        - name: CharacterMetaData
+          file: ./abis/CharacterMetaData.json
+      eventHandlers:
+        - event: LevelUp(indexed uint256,uint8)
+          handler: handleLevelUp
+        - event: Exp(indexed uint256,uint256,uint256)
+          handler: handleExp
+  

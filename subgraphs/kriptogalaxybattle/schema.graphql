@@ -12,6 +12,8 @@ type Robot @entity {
   siringWithId: BigInt! 
   generation: BigInt!
   image: String!
+  exp: Int!
+  level: Int!
 }
 
 
@@ -30,6 +32,8 @@ type Monster @entity {
   siringWithId: BigInt! 
   generation: BigInt!
   image: String!
+  exp: Int!
+  level: Int!
 }
 
 
