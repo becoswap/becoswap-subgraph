@@ -39,4 +39,8 @@ type Planet @entity {
   cardId: Int!
   size: Int!
   rarity: Int!
+
+  strategy: Bytes!
+  robots: [Robot!]!,
+  monsters: [Monster!]!,
 }
