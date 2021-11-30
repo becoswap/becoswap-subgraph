@@ -2,7 +2,7 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { RobotCreated, Pregnant, Transfer } from "../generated/RobotCore/RobotCore";
 import { Exp, LevelUp } from "../generated/RobotMetaData/CharacterMetaData";
 import { Robot } from "../generated/schema";
-import { cooldowns, fetchGeneTraits, getRobotImage, ONE_BI, TWO_BI, ZERO_BI } from "./util";
+import { cooldowns, fetchGeneTraits, getRobotImage, ONE_BI, TWO_BI, ZERO_BD, ZERO_BI } from "./util";
 
 let MAX_COOLDOWN_INDEX = BigInt.fromI32(13);
 let SECONDS_PER_BLOCK = BigInt.fromI32(5);
@@ -60,7 +60,7 @@ export function handleCreate(args: RobotCreated): void {
   let traits = fetchGeneTraits(args.params._genes);
   robot.gen0Rarity = BigInt.fromI32(1);
   robot.image = getRobotImage(traits);
-  robot.exp = 0;
+  robot.exp = ZERO_BD;
   robot.level = 0;
   robot.save();
 }
@@ -76,10 +76,11 @@ export function handleTransfer(args: Transfer): void {
 
 export function handleExp(args: Exp): void {
   let robot = Robot.load(args.params._tokenId.toString());
-  if (args.params._expIncreased.gt(BigInt.fromI32(0))) {
-    robot.exp += args.params._expIncreased.toI32()
+  let expInc = args.params._expIncreased.toBigDecimal();
+  if (expInc.gt(ZERO_BD)) {
+    robot.exp = robot.exp.plus(expInc)
   } else {
-    robot.exp -= args.params._expDecreased.toI32()
+    robot.exp = robot.exp.minus(args.params._expDecreased.toBigDecimal())
   }
   robot.save()
 }

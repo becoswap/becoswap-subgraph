@@ -2,7 +2,7 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { MonsterCreated, Pregnant, Transfer } from "../generated/MonsterCore/MonsterCore";
 import { Exp, LevelUp } from "../generated/RobotMetaData/CharacterMetaData";
 import { Monster } from "../generated/schema";
-import { cooldowns, fetchGeneTraits, getMonsterImage, ONE_BI, TWO_BI, ZERO_BI } from "./util";
+import { cooldowns, fetchGeneTraits, getMonsterImage, ONE_BI, TWO_BI, ZERO_BD, ZERO_BI } from "./util";
 
 let MAX_COOLDOWN_INDEX = BigInt.fromI32(13);
 let SECONDS_PER_BLOCK = BigInt.fromI32(5);
@@ -37,7 +37,7 @@ export function handleCreate(args: MonsterCreated): void {
   monster.generation = ZERO_BI;
   monster.cooldownIndex = ZERO_BI;
   monster.name = "KABA Monster #" + monster.id;
-  monster.exp = 0;
+  monster.exp = ZERO_BD;
   monster.level = 0;
 
   if (!monster.matronId.isZero()) {
@@ -76,10 +76,11 @@ export function handleTransfer(args: Transfer): void {
 
 export function handleExp(args: Exp): void {
   let monster = Monster.load(args.params._tokenId.toString());
-  if (args.params._expIncreased.gt(BigInt.fromI32(0))) {
-    monster.exp += args.params._expIncreased.toI32()
+  let expInc = args.params._expIncreased.toBigDecimal();
+  if (expInc.gt(ZERO_BD)) {
+    monster.exp = monster.exp.plus(expInc)
   } else {
-    monster.exp -= args.params._expDecreased.toI32()
+    monster.exp = monster.exp.minus(args.params._expDecreased.toBigDecimal())
   }
   monster.save()
 }

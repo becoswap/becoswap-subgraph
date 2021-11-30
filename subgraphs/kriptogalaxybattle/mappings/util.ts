@@ -1,5 +1,5 @@
 import { GeneScience } from "../generated/RobotCore/GeneScience";
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
 let geneScienceAddr = "0x8604793d4135c39787E209Aa791CAB258808861b";
 let robotImageURL = "https://images.kriptogaming.com/robot/";
@@ -8,6 +8,7 @@ let monsterImageURL = "https://images.kriptogaming.com/monster/";
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
 export let TWO_BI = BigInt.fromI32(2);
+export let ZERO_BD = BigDecimal.fromString("0");
 
 export function fetchGeneTraits(genes: BigInt): Array<i32> {
   let contract = GeneScience.bind(Address.fromString(geneScienceAddr));
