@@ -85,9 +85,9 @@ dataSources:
     name: FarmingV1
     network: mainnet
     source:
-      address: '0x96534ACCf2d52225462cFE0A0Ec18B8b37353E4d'
+      address: '0xE5a0646e86F7382c6577b9E71a4f9937f1aA3442'
       abi: FarmingV1
-      startBlock: 5247094
+      startBlock: 5568962
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -106,9 +106,9 @@ dataSources:
     name: RobotMetaData
     network: mainnet
     source:
-      address: '0xD62aa59Fe881B5B257446460148ae62D8DD3b09e'
+      address: '0x5f0C84F321145D96Ba093C097CBF5c9913aC4873'
       abi: CharacterMetaData
-      startBlock: 5247089
+      startBlock: 5568959
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -129,9 +129,9 @@ dataSources:
     name: MonsterMetaData
     network: mainnet
     source:
-      address: '0x7356b12728c2232D7E6bEdEF4c871d06A5AA8a65'
+      address: '0xe3ddBc68d3A08a2ec8dFCaFF30b9b169CEbED3F5'
       abi: CharacterMetaData
-      startBlock: 5247090
+      startBlock: 5568960
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
