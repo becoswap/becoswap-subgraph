@@ -2,7 +2,7 @@ import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { Created, Transfer } from "../generated/PlanetCore/PlanetCore";
 import { Planet } from "../generated/schema";
 
-const strategies: Array<string> = ["0x96534accf2d52225462cfe0a0ec18b8b37353e4d"];
+const strategies: Array<string> = ["0xe5a0646e86f7382c6577b9e71a4f9937f1aa3442"];
 
 function isStratery(addr: Address): boolean {
   for (let i = 0; i < strategies.length; i++) {
