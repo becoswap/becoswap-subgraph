@@ -18,6 +18,14 @@ type Robot @entity {
 
 
 
+type Team @entity {
+  id: ID!
+  owner: String!
+  robots: [Robot]!,
+  monsters: [Monster]!,
+}
+
+
 type Monster @entity {
   id: ID!
 
