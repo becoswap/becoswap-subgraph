@@ -26,7 +26,7 @@ export function handleDestroyTeam(e: DestroyTeam): void {
 export function handleTransfer(args: Transfer): void {
   let m = Team.load(args.params.tokenId.toString());
   if (m) {
-    m.owner = args.params.to.toString();
+    m.owner = args.params.to.toHex();
     m.save();
   }
 }
