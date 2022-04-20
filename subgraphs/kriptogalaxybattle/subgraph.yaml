@@ -172,3 +172,23 @@ dataSources:
           handler: handleDestroyTeam
         - event: Transfer(indexed address,indexed address,indexed uint256) 
           handler: handleTransfer  
+  - kind: ethereum/contract
+    name: PvPTicket
+    network: mainnet
+    source:
+      address: '0xd0c6f7A88718cb1A91c513a654660eC67B76a346'
+      abi: PvPTicket
+      startBlock: 7744531
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/pvpTicket.ts
+      entities:
+        - PvPTicket
+      abis:
+        - name: PvPTicket
+          file: ./abis/PvPTicket.json
+      eventHandlers:
+        - event: Buy(indexed address,uint256)
+          handler: handleBuy
