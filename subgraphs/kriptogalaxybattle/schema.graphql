@@ -56,3 +56,8 @@ type Planet @entity {
   robots: [Robot]!,
   monsters: [Monster]!,
 }
+
+type User @entity {
+  id: ID!
+  pvpTicket: Int!
+}
