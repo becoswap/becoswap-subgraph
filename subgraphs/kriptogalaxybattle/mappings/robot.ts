@@ -9,6 +9,7 @@ let SECONDS_PER_BLOCK = BigInt.fromI32(5);
 
 export function handlePregnant(args: Pregnant): void {
   let matron = Robot.load(args.params.matronId.toString());
+  if (!matron) return;
   // Mark the matron as pregnant, keeping track of who the sire is.
   matron.siringWithId = args.params.sireId;
   matron.save();
@@ -19,6 +20,7 @@ export function handlePregnant(args: Pregnant): void {
 
 function _triggerCooldown(args: Pregnant, robotId: string): void {
   let robot = Robot.load(robotId);
+  if (!robot) return;
   robot.cooldownEndBlock = cooldowns[robot.cooldownIndex.toI32()].div(SECONDS_PER_BLOCK).plus(args.block.number);
   if (robot.cooldownIndex.lt(MAX_COOLDOWN_INDEX)) {
     robot.cooldownIndex = robot.cooldownIndex.plus(ONE_BI);
@@ -37,23 +39,26 @@ export function handleCreate(args: RobotCreated): void {
   robot.generation = ZERO_BI;
   robot.cooldownIndex = ZERO_BI;
   robot.name = "KABA Robot #" + robot.id;
-
   if (!robot.matronId.isZero()) {
     let matron = Robot.load(robot.matronId.toString());
-    matron.siringWithId = ZERO_BI;
-    matron.save();
+    if (matron) {
+      matron.siringWithId = ZERO_BI;
+      matron.save();
 
-    let sire = Robot.load(robot.sireId.toString());
+      let sire = Robot.load(robot.sireId.toString());
 
-    robot.generation = matron.generation;
-    if (sire.generation > matron.generation) {
-      robot.generation = sire.generation;
-    }
-    robot.generation = robot.generation.plus(ONE_BI);
+      if (sire) {
+        robot.generation = matron.generation;
+        if (sire.generation > matron.generation) {
+          robot.generation = sire.generation;
+        }
+        robot.generation = robot.generation.plus(ONE_BI);
 
-    robot.cooldownIndex = robot.generation.div(TWO_BI);
-    if (robot.cooldownIndex.gt(MAX_COOLDOWN_INDEX)) {
-      robot.cooldownIndex = MAX_COOLDOWN_INDEX;
+        robot.cooldownIndex = robot.generation.div(TWO_BI);
+        if (robot.cooldownIndex.gt(MAX_COOLDOWN_INDEX)) {
+          robot.cooldownIndex = MAX_COOLDOWN_INDEX;
+        }
+      }
     }
   }
 
@@ -73,21 +78,23 @@ export function handleTransfer(args: Transfer): void {
   }
 }
 
-
 export function handleExp(args: Exp): void {
   let robot = Robot.load(args.params._tokenId.toString());
-  let expInc = args.params._expIncreased.toBigDecimal();
-  if (expInc.gt(ZERO_BD)) {
-    robot.exp = robot.exp.plus(expInc)
-  } else {
-    robot.exp = robot.exp.minus(args.params._expDecreased.toBigDecimal())
+  if (robot) {
+    let expInc = args.params._expIncreased.toBigDecimal();
+    if (expInc.gt(ZERO_BD)) {
+      robot.exp = robot.exp.plus(expInc);
+    } else {
+      robot.exp = robot.exp.minus(args.params._expDecreased.toBigDecimal());
+    }
+    robot.save();
   }
-  robot.save()
 }
-
 
 export function handleLevelUp(args: LevelUp): void {
   let robot = Robot.load(args.params._tokenId.toString());
-  robot.level = args.params._levelTo;
-  robot.save()
+  if (robot) {
+    robot.level = args.params._levelTo;
+    robot.save();
+  }
 }

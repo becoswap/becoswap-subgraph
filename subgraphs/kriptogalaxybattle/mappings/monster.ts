@@ -9,6 +9,7 @@ let SECONDS_PER_BLOCK = BigInt.fromI32(5);
 
 export function handlePregnant(args: Pregnant): void {
   let matron = Monster.load(args.params.matronId.toString());
+  if (!matron) return
   // Mark the matron as pregnant, keeping track of who the sire is.
   matron.siringWithId = args.params.sireId;
   matron.save();
@@ -19,6 +20,7 @@ export function handlePregnant(args: Pregnant): void {
 
 function _triggerCooldown(args: Pregnant, robotId: string): void {
   let m = Monster.load(robotId);
+  if (!m) return
   m.cooldownEndBlock = cooldowns[m.cooldownIndex.toI32()].div(SECONDS_PER_BLOCK).plus(args.block.number);
   if (m.cooldownIndex.lt(MAX_COOLDOWN_INDEX)) {
     m.cooldownIndex = m.cooldownIndex.plus(ONE_BI);
@@ -42,20 +44,24 @@ export function handleCreate(args: MonsterCreated): void {
 
   if (!monster.matronId.isZero()) {
     let matron = Monster.load(monster.matronId.toString());
-    matron.siringWithId = ZERO_BI;
-    matron.save();
+    if (matron) {
+      matron.siringWithId = ZERO_BI;
+      matron.save();
 
-    let sire = Monster.load(monster.sireId.toString());
+      let sire = Monster.load(monster.sireId.toString());
 
-    monster.generation = matron.generation;
-    if (sire.generation > matron.generation) {
-      monster.generation = sire.generation;
-    }
-    monster.generation = monster.generation.plus(ONE_BI);
+      monster.generation = matron.generation;
+      if (sire) {
+        if (sire.generation > matron.generation) {
+          monster.generation = sire.generation;
+        }
+        monster.generation = monster.generation.plus(ONE_BI);
 
-    monster.cooldownIndex = monster.generation.div(TWO_BI);
-    if (monster.cooldownIndex.gt(MAX_COOLDOWN_INDEX)) {
-      monster.cooldownIndex = MAX_COOLDOWN_INDEX;
+        monster.cooldownIndex = monster.generation.div(TWO_BI);
+        if (monster.cooldownIndex.gt(MAX_COOLDOWN_INDEX)) {
+          monster.cooldownIndex = MAX_COOLDOWN_INDEX;
+        }
+      }
     }
   }
 
@@ -73,21 +79,23 @@ export function handleTransfer(args: Transfer): void {
   }
 }
 
-
 export function handleExp(args: Exp): void {
   let monster = Monster.load(args.params._tokenId.toString());
-  let expInc = args.params._expIncreased.toBigDecimal();
-  if (expInc.gt(ZERO_BD)) {
-    monster.exp = monster.exp.plus(expInc)
-  } else {
-    monster.exp = monster.exp.minus(args.params._expDecreased.toBigDecimal())
+  if (monster) {
+    let expInc = args.params._expIncreased.toBigDecimal();
+    if (expInc.gt(ZERO_BD)) {
+      monster.exp = monster.exp.plus(expInc);
+    } else {
+      monster.exp = monster.exp.minus(args.params._expDecreased.toBigDecimal());
+    }
+    monster.save();
   }
-  monster.save()
 }
-
 
 export function handleLevelUp(args: LevelUp): void {
   let monster = Monster.load(args.params._tokenId.toString());
-  monster.level = args.params._levelTo;
-  monster.save()
+  if (monster) {
+    monster.level = args.params._levelTo;
+    monster.save();
+  }
 }

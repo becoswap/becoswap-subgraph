@@ -21,8 +21,8 @@ type Robot @entity {
 type Team @entity {
   id: ID!
   owner: String!
-  robots: [Robot]!,
-  monsters: [Monster]!,
+  robots: [Robot!]!,
+  monsters: [Monster!]!,
 }
 
 
@@ -53,8 +53,8 @@ type Planet @entity {
   rarity: Int!
 
   strategy: Bytes
-  robots: [Robot]!,
-  monsters: [Monster]!,
+  robots: [Robot!]!,
+  monsters: [Monster!]!,
 }
 
 type User @entity {

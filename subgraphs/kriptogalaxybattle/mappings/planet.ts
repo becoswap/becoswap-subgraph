@@ -1,4 +1,4 @@
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 import { Created, Transfer } from "../generated/PlanetCore/PlanetCore";
 import { Planet } from "../generated/schema";
 

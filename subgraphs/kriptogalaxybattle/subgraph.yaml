@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: Becoswap is a decentralized protocol for automated token exchange on Binance Smart Chain.
 repository: https://github.com/becoswap
 schema:
@@ -10,10 +10,10 @@ dataSources:
     source:
       address: '0x8FC2Cc14A4a1fcf7dACf22A1Fa05f546213cBB19'
       abi: RobotCore
-      startBlock: 4352786
+      startBlock: 4352781
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/robot.ts
       entities:
@@ -40,7 +40,7 @@ dataSources:
       startBlock: 4601955
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/monster.ts
       entities:
@@ -67,7 +67,7 @@ dataSources:
       startBlock: 5060118
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/planet.ts
       entities:
@@ -90,7 +90,7 @@ dataSources:
       startBlock: 5568962
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/farmingV1.ts
       entities:
@@ -111,7 +111,7 @@ dataSources:
       startBlock: 5568959
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/robot.ts
       entities:
@@ -134,7 +134,7 @@ dataSources:
       startBlock: 5568960
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/monster.ts
       entities:
@@ -157,7 +157,7 @@ dataSources:
       startBlock: 6869771
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/battleTeam.ts
       entities:
@@ -168,8 +168,6 @@ dataSources:
       eventHandlers:
         - event: CreateTeam(indexed address,uint256,uint256[],uint256[])
           handler: handleCreateTeam
-        - event: DestroyTeam(indexed address,uint256)
-          handler: handleDestroyTeam
         - event: Transfer(indexed address,indexed address,indexed uint256) 
           handler: handleTransfer  
   - kind: ethereum/contract
@@ -181,7 +179,7 @@ dataSources:
       startBlock: 7744531
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./mappings/pvpTicket.ts
       entities:
